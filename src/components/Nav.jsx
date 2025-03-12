@@ -2,6 +2,8 @@ import React from "react";
 import { supabase } from "../supabaseClient";
 import { Navigate, useNavigate } from "react-router-dom";
 
+import skybaseLogo from "../assets/skybase.png";
+
 const Nav = ({ userName }) => {
   const navigate = useNavigate();
 
@@ -13,7 +15,7 @@ const Nav = ({ userName }) => {
     <div className="">
       <div className="navbar bg-base-100 shadow-sm px-12">
         <div className="flex-1">
-          <a className="text-xl text-white">Innov8</a>
+          <img src={skybaseLogo} className="object-cover w-10 h-10" />
         </div>
         <div className="flex gap-4 items-center">
           <div className="dropdown dropdown-end">

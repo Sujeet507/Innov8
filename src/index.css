@@ -12,12 +12,11 @@
 }
 
 .login-form {
-  margin-top: 20px;
+  margin-top: 12px;
   padding: 20px;
 }
 
 fieldset input {
-  margin-top: 6px;
   padding: 8px;
 }
 .buttons {
