@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "../supabaseClient";
 import { toast } from "react-hot-toast";
+import Modal from "../components/Modal";
 
 function Login() {
+  
   const onChangeHandler = (name, value) => {
     setCredData((prevState) => ({
       ...prevState,

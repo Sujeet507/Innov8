@@ -21,6 +21,8 @@ import {
 } from "@/components/ui/table";
 import Nav from "../components/Nav";
 import PdfView from "../components/PdfView";
+import Modal from "../components/Modal";
+import toast from "react-hot-toast";
 
 export default function ProjectTable() {
   const [pdfView, setPdfView] = useState({
@@ -33,6 +35,42 @@ export default function ProjectTable() {
     fetchUploads();
   }, []);
   const [uploads, setUploads] = useState([]);
+
+  const [isModalOpen, setIsModalOpen] = useState({
+    isOpen: false,
+    title: "",
+    file_id: null,
+  });
+
+  const handleModalOpenChange = (isOpen) => {
+    setIsModalOpen((prev) => ({ ...prev, isOpen }));
+  };
+
+  const toggleModal = (file_id, title, rating, status) => {
+    console.log("status", status);
+    if (status === "review") {
+      toast.error("Please update the status before rating");
+      return;
+    }
+    setIsModalOpen({
+      isOpen: true,
+      title,
+      file_id,
+      rating: rating || 0,
+    });
+  };
+
+  const handleSubmitRating = async (file_id, rating) => {
+    const { error } = await supabase
+      .from("user_uploads")
+      .update({ rating })
+      .eq("file_id", file_id);
+
+    if (!error) {
+      toast.success("Rating submitted!");
+      fetchUploads();
+    }
+  };
 
   const fetchUploads = async () => {
     const { data, error } = await supabase
@@ -117,6 +155,7 @@ export default function ProjectTable() {
                   </TableHead>
                   <TableHead className="w-24 text-center">View</TableHead>
                   <TableHead className="w-40">Status</TableHead>
+                  <TableHead className="w-40">Rate</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -152,6 +191,8 @@ export default function ProjectTable() {
                       <div className="flex items-center gap-2">
                         {getStatusBadge(upload.status)}
                         <Select
+                          className="text-white"
+                          required
                           defaultValue={upload.status}
                           onValueChange={(value) =>
                             updateStatus(upload.file_id, value)
@@ -170,6 +211,89 @@ export default function ProjectTable() {
                         </Select>
                       </div>
                     </TableCell>
+                    <TableCell>
+                      {!upload.rating ? (
+                        <button
+                          className="btn btn-accent border-0 outline-0"
+                          onClick={() =>
+                            toggleModal(
+                              upload.file_id,
+                              upload.project_title,
+                              upload.rating,
+                              upload.status
+                            )
+                          }
+                        >
+                          Rate
+                        </button>
+                      ) : (
+                        <div className="flex items-center gap-2">
+                          <span className="text-sm font-semibold text-muted-foreground">
+                            {upload.rating}
+                          </span>
+                          <div
+                            className="w-fit cursor-pointer"
+                            onClick={() =>
+                              toggleModal(
+                                upload.file_id,
+                                upload.project_title,
+                                upload.rating,
+                                upload.status
+                              )
+                            }
+                          >
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="20"
+                              height="20"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              strokeWidth="2"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              className="lucide lucide-pencil"
+                            >
+                              <path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z" />
+                              <path d="m15 5 4 4" />
+                            </svg>
+                          </div>
+                        </div>
+                      )}
+                    </TableCell>
+                    {/* <TableCell>
+                      <div className="flex items-center gap-2">
+                        <span className="text-sm font-semibold text-muted-foreground">
+                          {upload.rating ? upload.rating : "Not rated"}
+                        </span>
+                        <div
+                          className="w-fit cursor-pointer"
+                          onClick={() =>
+                            toggleModal(
+                              upload.file_id,
+                              upload.project_title,
+                              upload.rating
+                            )
+                          }
+                        >
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="24"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            class="lucide lucide-pencil"
+                          >
+                            <path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z" />
+                            <path d="m15 5 4 4" />
+                          </svg>
+                        </div>
+                      </div>
+                    </TableCell> */}
                   </TableRow>
                 ))}
               </TableBody>
@@ -198,6 +322,19 @@ export default function ProjectTable() {
               fileUrl={pdfView.fileUrl}
               setPdfView={setPdfView}
               title={pdfView.title}
+            />
+          </div>
+        )}
+        {isModalOpen.isOpen && (
+          <div className="fixed inset-0 z-50 bg-background/80 backdrop-blur-sm">
+            <Modal
+              open={isModalOpen.isOpen}
+              role="Admin"
+              title={isModalOpen.title}
+              file_id={isModalOpen.file_id}
+              onOpenChange={handleModalOpenChange}
+              onSubmitRating={handleSubmitRating}
+              initialRating={isModalOpen.rating}
             />
           </div>
         )}
