@@ -15,6 +15,7 @@ import {
 import PdfView from "../components/PdfView";
 import Modal from "../components/Modal";
 import { Eye } from "lucide-react";
+import toast from "react-hot-toast";
 
 export default function ProposalsList() {
   const [pdfView, setPdfView] = useState({
@@ -34,7 +35,11 @@ export default function ProposalsList() {
     setIsModalOpen((prev) => ({ ...prev, isOpen }));
   };
 
-  const toggleModal = (file_id, title, rating) => {
+  const toggleModal = (file_id, title, rating , status) => {
+    if(status === "pending"){
+      toast.error("Please wait for your proposal status to be updated.")
+      return;
+    }
     setIsModalOpen({
       isOpen: true,
       title,
@@ -144,7 +149,7 @@ export default function ProposalsList() {
                       size="sm"
                       className="h-8 w-8 p-0 cursor-pointer"
                       onClick={() =>
-                        toggleModal(upload.file_id, upload.title, upload.rating)
+                        toggleModal(upload.file_id, upload.title, upload.rating , upload.status)
                       }
                     >
                       <Eye className="h-4 w-4" />
