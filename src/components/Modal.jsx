@@ -22,7 +22,6 @@ const Modal = ({
 }) => {
   useEffect(() => {
     if (open) {
-      console.log(open);
       setInputRating(initialRating || "");
     }
   }, [open, initialRating]);

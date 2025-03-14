@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from "uuid";
 
 import pdficon from "./assets/pdf.png";
 import { Toaster, toast } from "react-hot-toast";
+import Countdown from "./components/Countdown";
 
 const FileUpload = () => {
   const [selectedFile, setSelectedFile] = useState(null);
@@ -211,6 +212,7 @@ const FileUpload = () => {
             <a className="btn btn-primary bg-teal-600 outline-0 border-0" href="/proposals">View All Proposals</a>
             </div>
           </div>
+          <Countdown/>
         </div>
       </div>
     </>

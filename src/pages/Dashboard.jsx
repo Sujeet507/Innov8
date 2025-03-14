@@ -47,7 +47,6 @@ export default function ProjectTable() {
   };
 
   const toggleModal = (file_id, title, rating, status) => {
-    console.log("status", status);
     if (status === "review") {
       toast.error("Please update the status before rating");
       return;
@@ -79,7 +78,6 @@ export default function ProjectTable() {
       .order("id");
     if (error) return console.error(error);
     setUploads(data);
-    console.log("data", data);
   };
 
   const updateStatus = async (id, status) => {

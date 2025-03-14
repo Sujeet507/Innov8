@@ -56,7 +56,6 @@ export default function ProposalsList() {
       .order("id");
     if (error) return console.error(error);
     setUploads(data);
-    console.log("data", data);
   };
 
   // Helper function to format dates

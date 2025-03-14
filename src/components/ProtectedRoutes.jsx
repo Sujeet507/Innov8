@@ -9,7 +9,6 @@ const ProtectedRoute = ({ children }) => {
 
   async function checkAdmin(){
     const { data, error } = await supabase.auth.getUser();
-    console.log({ data, error });
 
     if(error){
         navigate("/login")
