@@ -214,7 +214,7 @@ export default function ProjectTable() {
                     <TableCell>
                       {!upload.rating ? (
                         <button
-                          className="btn btn-accent border-0 outline-0"
+                          className="btn btn-accent border-0 outline-0 cursor-pointer"
                           onClick={() =>
                             toggleModal(
                               upload.file_id,

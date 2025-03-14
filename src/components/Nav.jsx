@@ -2,7 +2,7 @@ import React from "react";
 import { supabase } from "../supabaseClient";
 import { Navigate, useNavigate } from "react-router-dom";
 
-import skybaseLogo from "../assets/skybase.png";
+import skybaseLogo from "../assets/logo_skybase.png";
 
 const Nav = ({ userName }) => {
   const navigate = useNavigate();
