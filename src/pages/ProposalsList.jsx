@@ -54,7 +54,8 @@ export default function ProposalsList() {
       .select("*")
       .order("id");
     if (error) return console.error(error);
-    setUploads(data);
+    const shuffled = data.sort(() => Math.random() - 0.5);
+    setUploads(shuffled);
   };
 
   // Helper function to format dates
@@ -113,9 +114,9 @@ export default function ProposalsList() {
               <TableRow>
                 <TableHead className="w-12 text-center">#</TableHead>
                 <TableHead>Project Title</TableHead>
-                <TableHead className="hidden md:table-cell">
+                {/* <TableHead className="hidden md:table-cell">
                   Submitted On
-                </TableHead>
+                </TableHead> */}
                 <TableHead className="w-40">Status</TableHead>
                 <TableHead className="w-40">View Score</TableHead>
               </TableRow>
@@ -129,9 +130,9 @@ export default function ProposalsList() {
                   <TableCell className="font-medium">
                     {upload.project_title}
                   </TableCell>
-                  <TableCell className="hidden md:table-cell text-muted-foreground">
+                  {/* <TableCell className="hidden md:table-cell text-muted-foreground">
                     {formatDate(upload.created_at)}
-                  </TableCell>
+                  </TableCell> */}
                   <TableCell>
                     <div className="flex items-center gap-2">
                       {getStatusBadge(upload.status)}
