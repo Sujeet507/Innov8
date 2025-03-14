@@ -35,7 +35,6 @@ export default function ProposalsList() {
   };
 
   const toggleModal = (file_id, title, rating) => {
-    console.log("title", title);
     setIsModalOpen({
       isOpen: true,
       title,

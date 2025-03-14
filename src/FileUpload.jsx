@@ -212,7 +212,6 @@ const FileUpload = () => {
             <a className="btn btn-primary bg-teal-600 outline-0 border-0" href="/proposals">View All Proposals</a>
             </div>
           </div>
-          <Countdown/>
         </div>
       </div>
     </>
