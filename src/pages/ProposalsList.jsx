@@ -143,7 +143,7 @@ export default function ProposalsList() {
                     <Button
                       variant="outline"
                       size="sm"
-                      className="h-8 w-8 p-0"
+                      className="h-8 w-8 p-0 cursor-pointer"
                       onClick={() =>
                         toggleModal(upload.file_id, upload.title, upload.rating)
                       }
