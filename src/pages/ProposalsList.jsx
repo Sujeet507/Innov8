@@ -36,7 +36,7 @@ export default function ProposalsList() {
   };
 
   const toggleModal = (file_id, title, rating , status) => {
-    if(status === "pending"){
+    if(status === "review"){
       toast.error("Please wait for your proposal status to be updated.")
       return;
     }
