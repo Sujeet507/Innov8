@@ -4,7 +4,6 @@ import { v4 as uuidv4 } from "uuid";
 
 import pdficon from "./assets/pdf.png";
 import { Toaster, toast } from "react-hot-toast";
-import Countdown from "./components/Countdown";
 
 const FileUpload = () => {
   const [selectedFile, setSelectedFile] = useState(null);
