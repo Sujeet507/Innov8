@@ -19,12 +19,14 @@ const Modal = ({
   onOpenChange,
   onSubmitRating,
   initialRating,
+  onDelete,
+  isDeleteMode = false
 }) => {
   useEffect(() => {
-    if (open) {
+    if (open && !isDeleteMode) {
       setInputRating(initialRating || "");
     }
-  }, [open, initialRating]);
+  }, [open, initialRating,isDeleteMode]);
 
   useEffect(() => {
     if (open) {
@@ -40,82 +42,82 @@ const Modal = ({
       onOpenChange(false); // Close modal after submit
     }
   };
+  const handleDelete = () =>{
+    if(file_id){
+      onDelete(file_id)
+      onOpenChange(false);
+    }
+  }
 
   return (
     <div>
       <AlertDialog open={open} onOpenChange={onOpenChange}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>
-              {role === "Admin"
-                ? `Rate ${title}`
-                : `Your Score is ${rating}`}
-            </AlertDialogTitle>
+          <AlertDialogTitle>
+            {isDeleteMode
+              ? `Do you want to delete "${title}"?`
+              : role === "Admin"
+              ? `Rate ${title}`
+              : `Your Score is ${rating}`}
+          </AlertDialogTitle>
 
-            <AlertDialogDescription>
-              {role === "Admin" ? (
-                <>
-                  Please provide your rating below.
-                  <input
-                    type="number"
-                    className="mt-3 w-full px-3 py-2 border rounded-md focus:outline-none focus:ring"
-                    placeholder="Enter rating (1-10)"
-                    value={inputRating}
-                    onChange={(e) => setInputRating(e.target.value)}
-                    max={10}
-                  />
-                </>
-              ) : (
-                <>
-                  {rating > 5 ? (
-                    <>
-                      <h1 className=" text-green-500 font-medium">
-                        Great Job. Keep up the amazing work! Sakcha ta kasaile?😎😎🤩
-                      </h1>
-                      <p className=" text-muted-foreground pt-2">
-                        Please contact Ms. Akriti or Sonaam Sir for any queries.
-                      </p>
-                    </>
-                  ) : (
-                    <>
-                     <h1 className=" text-red-500 font-medium pt-2">
-                        You could do better.😊😊😊🙌
-                      </h1>
-                      <p className=" text-muted-foreground pt-2">
-                        Please contact Ms. Akriti or Sonaam Sir for any queries.
-                      </p>
-                    </>
-                  )}
-                </>
-              )}
-            </AlertDialogDescription>
+          <AlertDialogDescription>
+            {isDeleteMode ? (
+              <p className="text-muted-foreground">
+                This action cannot be undone. The project will be permanently
+                deleted from the system. Are you sure you want to delete it?
+              </p>
+            ) : role === "Admin" ? (
+              <>
+                Please provide your rating below.
+                <input
+                  type="number"
+                  className="mt-3 w-full px-3 py-2 border rounded-md focus:outline-none focus:ring"
+                  placeholder="Enter rating (1-10)"
+                  value={inputRating}
+                  onChange={(e) => setInputRating(e.target.value)}
+                  max={10}
+                />
+              </>
+            ) : (
+              <>
+                {rating > 5 ? (
+                  <h1 className="text-green-500 font-medium">
+                    Great Job. Keep up the amazing work! Sakcha ta kasaile? 😎
+                  </h1>
+                ) : (
+                  <h1 className="text-red-500 font-medium">
+                    You could do better 😊🙌
+                  </h1>
+                )}
+                <p className="text-muted-foreground pt-2">
+                  Please contact Ms. Akriti or Sonaam Sir for any queries.
+                </p>
+              </>
+            )}
+          </AlertDialogDescription>
           </AlertDialogHeader>
 
-          <AlertDialogFooter>
-            <AlertDialogCancel
-              onClick={() => onOpenChange(false)}
-              className="cursor-pointer"
-            >
-              Cancel
-            </AlertDialogCancel>
-            {role === "Admin" && (
-              <AlertDialogAction
-                onClick={handleSubmit}
-                className="cursor-pointer"
-              >
-                Submit Rating
-              </AlertDialogAction>
-            )}
-
-            {role !== "Admin" && (
-              <AlertDialogAction
-                onClick={() => onOpenChange(false)}
-                className="cursor-pointer"
-              >
-                Continue
-              </AlertDialogAction>
-            )}
-          </AlertDialogFooter>
+         
+        <AlertDialogFooter>
+          <AlertDialogCancel className = "cursor-pointer" onClick={() => onOpenChange(false)}>
+            Cancel
+          </AlertDialogCancel>
+          {isDeleteMode ? (
+            <AlertDialogAction className = "cursor-pointer" onClick={handleDelete}>
+              Confirm Delete
+            </AlertDialogAction>
+          ) : role === "Admin" ? (
+            <AlertDialogAction className = "cursor-pointer" onClick={handleSubmit}>
+              Submit Rating
+            </AlertDialogAction>
+          ) : (
+            <AlertDialogAction className = "cursor-pointer" onClick={() => onOpenChange(false)}>
+              Continue
+            </AlertDialogAction>
+          )}
+        </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
     </div>
